@@ -31,7 +31,6 @@ Commands sourced from `Makefile`.
 | `make pull [<remote hostname or USER@HOST>]:[<remote path>] [<local path>]`*  | Get files from specified `ENV` server (optionally takes a path relative to `src/`, prompts otherwise) |
 | `make sync [<from hostname or USER@HOST>] [<to hostname or USER@HOST>]` | Pull database, `wp-content` from _origin_ and push to _destination_ (prompts for each procedure) |
 | `make plugit [<user/repo>] ENV=[<host or USER@]HOST>]` | Download a git repo to the specified `ENV` server's `wp-content/plugins` folder, set proper ownership & permissions |
-| `make theme_build ENV=[<hostname or USER@]HOST>]` | Run the theme build (CSS/JS compile) scripts & push to specified `ENV` server.    |
 | `make destroy`              | 🧨 Permanently destroys the database, app, & all stored files (fresh start) 🧨                          |
 | Development                 |                                                                                                         |
 | `make dev`                  | "`vagrant up`" Power up (or create, if it doesn't already exist) the VM                                 |
@@ -40,6 +39,7 @@ Commands sourced from `Makefile`.
 | `make dev_ssh`              | "`vagrant ssh`" SSH into the VM                                                                         |
 | `make dev_ssh_info`         | "`vagrant ssh-config dokku`" Output the SSH info (for use in `~/.ssh/config`)                           |
 | `make dev_destroy`          | "`vagrant destroy`" 🧨 Permanently destroys all remnants of the VM: the database, app, & all stored files (fresh start) 🧨 |
+| `make theme_build [<local path>] [<hostname or USER@HOST>]:[remote path]` | Run the theme build (CSS/JS compile) scripts & push to [<hostname or USER@HOST>]:[remote path] |
 
 > \*Before `make push ...`, `make pull ...`, `make theme_build ...`, or `vscode-ext.sync-rsync` will work you must first modify the host `visudo` settings to allow unattended operations:
 
