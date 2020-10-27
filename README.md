@@ -1,7 +1,7 @@
 # make-success
 A makefile for scaffolding, pushing, pulling, syncing, databases and files local &amp; remote.
 
-Currently in use on a [Dokku](http://dokku.viewdocs.io/dokku/)-powered ([Docker](https://docker.com)-ized [WordPress](https://wordpress.org) installation.
+Currently in use on a [Dokku](http://dokku.viewdocs.io/dokku/)-powered [Docker](https://docker.com)-ized [WordPress](https://wordpress.org) installation.
 
 Minor modifications would be required to generalize it for use in any environment.
 
