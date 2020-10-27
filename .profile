@@ -44,10 +44,10 @@ function rnx {
 
 # enter docker conainter
 function bin {
-				if [ $# -eq 0 ]; then
-								echo "You must supply an app name!"
-								return 1
-				fi
+	if [ $# -eq 0 ]; then
+		echo "You must supply an app name!"
+		return 1
+	fi
 	if [ $# -eq 2 ] && [ "$2" = "-s" ] || [ "$2" = "sudo" ]; then
 		sudo docker exec -it $1.web.1 /bin/bash;
 	else
