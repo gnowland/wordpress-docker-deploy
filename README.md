@@ -39,11 +39,7 @@ Minor modifications would be required to generalize it for use in any environmen
 
 > \*Before `make push ...`, `make pull ...`, `make theme_build ...`, or `vscode-ext.sync-rsync` will work you must first modify the host `visudo` settings to allow unattended operations:
 
-### Attn: Pushing and Pulling:
-
-- You can use either the `make push`/`make pull` commands or, if using VS Code, the [`vscode-ext.sync-rsync`](https://marketplace.visualstudio.com/items?itemName=vscode-ext.sync-rsync) extension (recommended for development/staging, NOT RECOMMENDED FOR PRODUCTION as it will push the file on save... a practice which is likely to result in a broken website!)
-
-> 🌍 The following commands should be run on the dev/remote server (host)
+> 🌍 The following commands should be run on the server
 
 ```shell
 which rsync # take note of the result!
