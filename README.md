@@ -70,7 +70,7 @@ Copy `.profile` up to the server:
 # local ./
 scp .profile [<remote hostname or USER@HOST>]:~
 
-# remote ~
+# remote ~/
 source .profile
 ```
 
