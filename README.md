@@ -64,11 +64,13 @@ sudo visudo
 
 Commands sourced from `.profile`.
 
+Copy `.profile` up to the server:
+
 ```shell
-# local
+# local ./
 scp .profile [<remote hostname or USER@HOST>]:~
 
-# remote
+# remote ~
 source .profile
 ```
 
