@@ -33,8 +33,7 @@ Commands sourced from `Makefile`.
 | `make plugit [<user/repo>] ENV=[<host or USER@]HOST>]` | Download a git repo to the specified `ENV` server's `wp-content/plugins` folder, set proper ownership & permissions |
 | `make theme_build ENV=[<hostname or USER@]HOST>]` | Run the theme build (CSS/JS compile) scripts & push to specified `ENV` server.    |
 | `make destroy`              | 🧨 Permanently destroys the database, app, & all stored files (fresh start) 🧨                          |
--||-
-| <td colspan=2>Development</td> |
+| Development                 |                                                                                                         |
 | `make dev`                  | "`vagrant up`" Power up (or create, if it doesn't already exist) the VM                                 |
 | `make dev_down`             | "`vagrant halt`" Shut down the VM                                                                       |
 | `make dev_reload`           | "`vagrant reload`" Restart the VM (loads any Vagrantfile changes)<br>Pass `--provision` to re-provision |
