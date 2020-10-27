@@ -1,0 +1,11 @@
+{
+  "require": {
+    "php": ">=PHP_VERSION",
+    "ext-gd": "*",
+    "ext-mbstring": "*",
+    "ext-exif": "*",
+    "ext-imagick": "*",
+
+    "wp-cli/wp-cli-bundle": "^2"
+  }
+}
