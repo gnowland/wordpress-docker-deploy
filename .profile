@@ -29,7 +29,7 @@ fi
 ### Aliases
 alias la='ls -Flash --color=always'
 
-###Functions
+### Functions
 # ls with octal permissions (e.g. 755)
 function lap { ls -Flah --color=always "$@" | awk '{k=0;for(i=0;i<=8;i++)k+=((substr($1,i+2,1)~/[rwx]/)*2^(8-i));if(k)printf(" %0o ",k);print}'; }
 
