@@ -35,7 +35,6 @@ Commands sourced from `Makefile`.
 | `make destroy`              | 🧨 Permanently destroys the database, app, & all stored files (fresh start) 🧨                          |
 -||-
 | <td colspan=2>Development</td> |
-| Development                 
 | `make dev`                  | "`vagrant up`" Power up (or create, if it doesn't already exist) the VM                                 |
 | `make dev_down`             | "`vagrant halt`" Shut down the VM                                                                       |
 | `make dev_reload`           | "`vagrant reload`" Restart the VM (loads any Vagrantfile changes)<br>Pass `--provision` to re-provision |
