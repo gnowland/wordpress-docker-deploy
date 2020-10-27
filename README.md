@@ -43,30 +43,24 @@ Commands sourced from `Makefile`.
 
 > \*Before `make push ...`, `make pull ...`, `make theme_build ...`, or `vscode-ext.sync-rsync` will work you must first modify the host `visudo` settings to allow unattended operations:
 
-> 🌍 The following commands should be run on the server
-
 ```shell
+# remote
 which rsync # take note of the result!
 sudo visudo
-```
 
-And add the following to the bottom of the file (lower instructions take precedence):
-
-```shell
+# ...and add the following to the bottom of the file (lower instructions take precedence):
 [<username>] ALL=NOPASSWD:[<path returned from which rsync>]
 ```
 
-IMPORTANT TARGET PATH INFORMATION!
-- Source
-  - When using "/" at the end of source path, rsync will copy the *content* of the source folder to the destination, but not the folder itself.
-  - When omitting "/" from the end of source path, rsync will copy *the folder and its content* to the destination.
-- Destination
-  - When using "/" at the end of the destination path, rsync will place the data *inside the last destination folder*.
-  - When omitting "/" from the end of the destination path, rsync will *create a folder with the name of the last destination* and paste the data inside that folder.
+> ⚠️ IMPORTANT PUSH/PULL/SYNC TARGET PATH INFORMATION:
+> - Source
+>   - When using "/" at the end of source path, rsync will copy the *content* of the source folder to the destination, but not the folder itself.
+>   - When omitting "/" from the end of source path, rsync will copy *the folder and its content* to the destination.
+> - Destination
+>   - When using "/" at the end of the destination path, rsync will place the data *inside the last destination folder*.
+>   - When omitting "/" from the end of the destination path, rsync will *create a folder with the name of the last destination* and paste the data inside that folder.
 
-### Shell
-
-## Custom Server Commands
+### Server shell
 
 Commands sourced from `.profile`.
 
