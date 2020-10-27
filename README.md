@@ -15,6 +15,10 @@ Minor modifications would be required to generalize it for use in any environmen
 
 ## Use
 
+### Make
+
+Commands sourced from `Makefile`.
+
 `make build` clones repo from https://github.com/WordPress/WordPress using variables within `.env` and configuration files within `config` and deploys it to a ([Docker](https://docker.com) container running [heroku-buildpack-php](https://github.com/heroku/heroku-buildpack-php) using the a [gliderlabs/herokuish](https://github.com/gliderlabs/herokuish) build orchestration on `git push dokku master`.
 
 | Command                     | Action                                                       |
@@ -59,6 +63,34 @@ IMPORTANT TARGET PATH INFORMATION!
 - Destination
   - When using "/" at the end of the destination path, rsync will place the data *inside the last destination folder*.
   - When omitting "/" from the end of the destination path, rsync will *create a folder with the name of the last destination* and paste the data inside that folder.
+
+### Shell
+
+## Custom Server Commands
+
+Commands sourced from `.profile`.
+
+```shell
+# local
+scp .profile [<remote hostname or USER@HOST>]:~
+
+# remote
+source .profile
+```
+
+| Command                           | Action                                                  | Notes                                                  |
+| --------------------------------- | ------------------------------------------------------- | ------------------------------------------------------ |
+| `la [<(opt: dir)>]`               | Supercharged `ls` (list files)                          | Uses current `dir` if unspecified                      |
+| `lap [<(opt: dir)>]`              | `la` with "octal permissions" (e.g. 755)                | ☝️                                                     |
+| `bin [<appname>] [<(opt: sudo)>]` | Enter container as root                                 | Executes `docker exec -it [<appname>].web.1 /bin/bash;`<br> (assumes `docker ps` 'name')`<br> Shorthand: `sudo : -s` |
+| `wgit [<user/repo>]`              | Download a git repo (e.g. plugin), extract, set ownership & permissions | Sets ownership to 32767 (container user)               |
+| `uzp [<file.zip>]`                | Extract a `.zip` file, set ownership & permissions                      | ☝️, (also: be sure to verify unzipped directory name!) |
+| `pfix`                            | Fix ownership & permissions of current directory & subdirectories       | Sets ownership to 32767 (container user)               |
+| `av [<on/off>]`                   | Turn on/off Sophos AV                                                   | Shorthand: `on : -i`, `off : -o` |
+| `clr`                             | Clear up RAM (PageCache, Swapfile)                                      | Not recommended to run often, or in live environments! |
+| `db [<export/import>] [<(import.sql)>]` | Import or export a database dump                                  | Export: Database dumps to `~/.sql` with timestamped filename.<br>Import: requires passing a `dump.sql` file<br>Shorthand: `export: -e`, `import: -i` |
+| `sync [<up/down>]`                | Sync `wp-content` files up or down from VAGRANT (dev) server            | Note: this only works between local & vagrant, this **will not work on remote (prod)**<br>Shorthand: `up: -u`, `down: -d` |
+
 
 ## Upgrading WordPress
 
