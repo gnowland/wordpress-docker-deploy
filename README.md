@@ -15,7 +15,7 @@ Minor modifications would be required to generalize it for use in any environmen
 
 ## Use
 
-### Make
+### Make Commands (local)
 
 Commands sourced from `Makefile`.
 
@@ -60,7 +60,7 @@ sudo visudo
 >   - When using "/" at the end of the destination path, rsync will place the data *inside the last destination folder*.
 >   - When omitting "/" from the end of the destination path, rsync will *create a folder with the name of the last destination* and paste the data inside that folder.
 
-### Server shell
+### Shell Scripts (server)
 
 Commands sourced from `.profile`.
 
