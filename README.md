@@ -39,7 +39,7 @@ Commands sourced from `Makefile`.
 | `make dev_ssh`              | "`vagrant ssh`" SSH into the VM                                                                         |
 | `make dev_ssh_info`         | "`vagrant ssh-config dokku`" Output the SSH info (for use in `~/.ssh/config`)                           |
 | `make dev_destroy`          | "`vagrant destroy`" 🧨 Permanently destroys all remnants of the VM: the database, app, & all stored files (fresh start) 🧨 |
-| `make theme_build [<local path>] [<hostname or USER@HOST>]:[remote path]` | Run the theme build (CSS/JS compile) scripts & push to [<hostname or USER@HOST>]:[remote path] |
+| `make theme_build [<local path>] [<hostname or USER@HOST>]:[remote path]` | Run the theme build (CSS/JS compile) scripts & push to `[<hostname or USER@HOST>]:[remote path]` |
 
 > \*Before `make push ...`, `make pull ...`, `make theme_build ...`, or `vscode-ext.sync-rsync` will work you must first modify the host `visudo` settings to allow unattended operations:
 
