@@ -1,4 +1,4 @@
-# WordPress Docker Wizard ✨
+# WordPress Docker Build & Deploy Wizard 🧙
 A makefile-managed all-in-one development system for scaffolding, pushing, pulling, and syncing databases and files to and from local and staging and remote servers. Phew.
 
 Currently in use on a [Dokku](http://dokku.viewdocs.io/dokku/)-powered [Docker](https://docker.com)-ized [WordPress](https://wordpress.org) installation.
