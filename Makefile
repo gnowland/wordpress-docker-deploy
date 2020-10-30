@@ -244,8 +244,7 @@ instructions: ## shows app setup instructions
 
 .PHONY: deploy
 deploy: ## deploys the built application to the dokku server
-	cd $(APP_NAME)/
-	git push dokku@$(SERVER_NAME) master
+	cd $(APP_NAME)/ && git push dokku master
 
 .PHONY: destroy
 destroy: ## destroys an existing wordpress blog installation and outputs undeploy instructions
@@ -357,7 +356,7 @@ endif
 	@echo import $(ORIG) db to $(DEST)? [Y/n]
 	@read line; if [[ $$line = "y" || $$line = "Y" ]] ; \
 	then \
-		scp tmp/$(ORIG)/.sql/$(ODB) $(DEST):~/.sql/$(ODB) ; \
+		scp tmp/$(ORIG)/.sql/$(ODB) $(DEST):~/.sql/ ; \
 		ssh -t $(DEST) bash --login -ci "'db import ~/.sql/$(ODB); exit'" ; \
 	fi
 	@echo push $(ORIG) wp-content to $(DEST)? [Y/n]
@@ -376,7 +375,7 @@ plugit: ## download git repo to server, extract, rename, set user:group, set per
 	@export DIR=$$(echo $(ARGS)$$line | cut -d'/' -f2- ) && \
 		ssh -t $(ENV) bash -c "' \
 		cd /var/lib/dokku/data/storage/$(APP_NAME)/wp-content/plugins/ && pwd && \
-		sudo rm -f master.zip && sudo wget https://github.com/$(ARGS)/archive/master.zip && \
+		sudo rm -f master.zip sudo rm -rf $$DIR && sudo wget https://github.com/$(ARGS)/archive/master.zip && \
 		sudo unzip -q master.zip && sudo rm -f master.zip && \
 		sudo mv -n $$DIR-master $$DIR && sudo chown -R 32767:32767 $$DIR && \
 		sudo find $$DIR -type d -exec chmod -- 755 {} \; && sudo find $$DIR -type f -exec chmod -- 644 {} \; && \
