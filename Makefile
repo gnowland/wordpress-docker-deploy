@@ -50,9 +50,9 @@ WGET_INSTALLED := $(shell command -v wget 2> /dev/null)
 ARGS = $(filter-out $@,$(MAKECMDGOALS))
 
 # get current wordpress version if it exists
-ifneq ("$(wildcard $(APP_NAME))", "")
+ifneq ("$(wildcard app/$(APP_NAME))", "")
 	APP_EXISTS = true
-	CURRENT_WORDPRESS_VERSION = $(shell sed -n "s/.*\$$wp_version = \'\(.*\)\';.*/\1/p" $(APP_NAME)/wp-includes/version.php)
+	CURRENT_WORDPRESS_VERSION = $(shell sed -n "s/.*\$$wp_version = \'\(.*\)\';.*/\1/p" app/$(APP_NAME)/wp-includes/version.php)
 endif
 
 default: build
@@ -70,7 +70,7 @@ help: ## this help.
 composer_update:
 	@echo "# ensuring the composer.json loads php $(PHP_VERSION) with the ext-gd extension providing PNG, JPEG and FreeType support";
 	@echo "# ...hang tight, this could take a minute or more...";
-	@(sed 's/PHP_VERSION/$(PHP_VERSION)/' config/composer.json > $(APP_NAME)/composer.json && cd $(APP_NAME) && php /usr/local/bin/composer.phar install --ignore-platform-reqs && rm -rf vendor && git add composer.json composer.lock && git diff-index --quiet --cached HEAD || git commit -qm "Use PHP $(PHP_VERSION) with ext-gd extension")
+	@(sed 's/PHP_VERSION/$(PHP_VERSION)/' config/composer.json > app/$(APP_NAME)/composer.json && cd app/$(APP_NAME) && php /usr/local/bin/composer.phar install --ignore-platform-reqs && rm -rf vendor && git add composer.json composer.lock && git diff-index --quiet --cached HEAD || git commit -qm "Use PHP $(PHP_VERSION) with ext-gd extension")
 
 .PHONY: build
 build: ## builds (or updates) a wordpress blog installation and outputs deploy instructions
@@ -87,26 +87,26 @@ endif
 endif
 
 ifdef APP_EXISTS # If app directory already exists
-	@echo "# directory \"$(APP_NAME)\" already exists, commence updating"
+	@echo "# directory \"app/$(APP_NAME)\" already exists, commence updating"
 ifneq ($(CURRENT_WORDPRESS_VERSION), $(WORDPRESS_VERSION))
 	@echo "# wordpress $(CURRENT_WORDPRESS_VERSION) will be updated to $(WORDPRESS_VERSION)"
-	@(cd $(APP_NAME) && git remote set-branches --add origin $(WORDPRESS_VERSION) && git fetch origin $(WORDPRESS_VERSION):latest && git merge -X theirs latest && git add -a && git diff-index --quiet --cached HEAD || git commit -qm "Updated WordPress to $(WORDPRESS_VERSION)")
+	@(cd app/$(APP_NAME) && git remote set-branches --add origin $(WORDPRESS_VERSION) && git fetch origin $(WORDPRESS_VERSION):latest && git merge -X theirs latest && git add -a && git diff-index --quiet --cached HEAD || git commit -qm "Updated WordPress to $(WORDPRESS_VERSION)")
 else
 	@echo "# wordpress $(CURRENT_WORDPRESS_VERSION) is already installed, skipping"
 endif
 else # If app directory does not exist
 	# creating the wordpress repo
 	@(grep -qxF '$(APP_NAME)/' .gitignore || echo '$(APP_NAME)/' >> .gitignore)
-	@(git -c advice.detachedHead=false clone --branch=$(WORDPRESS_VERSION) --single-branch https://github.com/WordPress/WordPress.git $(APP_NAME) && cd $(APP_NAME) && git checkout -qb master);
+	@(git -c advice.detachedHead=false clone --branch=$(WORDPRESS_VERSION) --single-branch https://github.com/WordPress/WordPress.git app/$(APP_NAME) && cd app/$(APP_NAME) && git checkout -qb master);
 endif
 	@echo ""
 	# Adding dependencies...
 	# adding wp-config.php from config
-	@(cp config/wp-config.php $(APP_NAME)/wp-config.php && cd $(APP_NAME) && git add wp-config.php && git diff-index --quiet --cached HEAD || git commit -qm "Adding environment-variable based wp-config.php")
+	@(cp config/wp-config.php app/$(APP_NAME)/wp-config.php && cd app/$(APP_NAME) && git add wp-config.php && git diff-index --quiet --cached HEAD || git commit -qm "Adding environment-variable based wp-config.php")
 	# adding .buildpacks file to configure heroku buildpacks
-	@(sed 's/PHP_BUILDPACK_VERSION/$(PHP_BUILDPACK_VERSION)/' config/.buildpacks > $(APP_NAME)/.buildpacks && cd $(APP_NAME) && git add .buildpacks && git diff-index --quiet --cached HEAD || git commit -qm "Specify heroku buildpacks")
+	@(sed 's/PHP_BUILDPACK_VERSION/$(PHP_BUILDPACK_VERSION)/' config/.buildpacks > app/$(APP_NAME)/.buildpacks && cd app/$(APP_NAME) && git add .buildpacks && git diff-index --quiet --cached HEAD || git commit -qm "Specify heroku buildpacks")
 	# adding apt-packages file to configure system packages
-	@(cp config/apt-packages $(APP_NAME)/apt-packages && cd $(APP_NAME) && git add apt-packages && git diff-index --quiet --cached HEAD || git commit -qm "Specify system dependencies Aptfile")
+	@(cp config/apt-packages app/$(APP_NAME)/apt-packages && cd app/$(APP_NAME) && git add apt-packages && git diff-index --quiet --cached HEAD || git commit -qm "Specify system dependencies Aptfile")
 ifdef APP_EXISTS # If app directory already exists
 	@echo update composer? [Y/n]
 	@read line; if [[ $$line = "y" || $$line = "Y" ]]; then make composer_update; else echo "# skipping composer update"; fi
@@ -114,21 +114,21 @@ else
 	@make composer_update
 endif
 	# 🐛 adding test.php to server 🐛
-	# @(echo '<?php die( $$_SERVER['SERVER_NAME'] ); ?>' > $(APP_NAME)/test.php  && cd $(APP_NAME) && git add test.php && git diff-index --quiet --cached HEAD || git commit -qm "Adding test.php to server")
+	# @(echo '<?php die( $$_SERVER['SERVER_NAME'] ); ?>' > app/$(APP_NAME)/test.php  && cd app/$(APP_NAME) && git add test.php && git diff-index --quiet --cached HEAD || git commit -qm "Adding test.php to server")
 	# adding Procfile to configure webserver
-	@(cp config/Procfile $(APP_NAME)/Procfile && cd $(APP_NAME) && git add Procfile && git diff-index --quiet --cached HEAD || git commit -qm "Adding Procfile to specify webserver")
+	@(cp config/Procfile app/$(APP_NAME)/Procfile && cd app/$(APP_NAME) && git add Procfile && git diff-index --quiet --cached HEAD || git commit -qm "Adding Procfile to specify webserver")
 	# adding .user.ini file to configure PHP
-	@(cp config/.user.ini $(APP_NAME)/.user.ini && cd $(APP_NAME) && git add .user.ini && git diff-index --quiet --cached HEAD || git commit -qm "Adding .user.ini to specify PHP settings")
+	@(cp config/.user.ini app/$(APP_NAME)/.user.ini && cd app/$(APP_NAME) && git add .user.ini && git diff-index --quiet --cached HEAD || git commit -qm "Adding .user.ini to specify PHP settings")
 	# adding .profile script to modify heroku environment
-	@(cp config/.profile $(APP_NAME)/.profile && cd $(APP_NAME) && git add .profile && git diff-index --quiet --cached HEAD || git commit -qm "Adding .profile to specify environment settings")
+	@(cp config/.profile app/$(APP_NAME)/.profile && cd app/$(APP_NAME) && git add .profile && git diff-index --quiet --cached HEAD || git commit -qm "Adding .profile to specify environment settings")
 	# adding nginx conf file to configure host NGINX
-	@(cp config/nginx.conf.sigil $(APP_NAME)/nginx.conf.sigil && cd $(APP_NAME) && git add nginx.conf.sigil && git diff-index --quiet --cached HEAD || git commit -qm "Adding nginx.conf.sigil to specify host NGINX settings")
+	@(cp config/nginx.conf.sigil app/$(APP_NAME)/nginx.conf.sigil && cd app/$(APP_NAME) && git add nginx.conf.sigil && git diff-index --quiet --cached HEAD || git commit -qm "Adding nginx.conf.sigil to specify host NGINX settings")
 	# adding nginx conf file to configure container NGINX
-	@(cp config/nginx.inc.conf $(APP_NAME)/nginx.inc.conf && cp config/h5bp_mime.types $(APP_NAME)/h5bp_mime.types && cd $(APP_NAME) && git add nginx.inc.conf h5bp_mime.types && git diff-index --quiet --cached HEAD || git commit -qm "Adding nginx.inc.conf & h5bp_mime.types to specify container NGINX settings")
+	@(cp config/nginx.inc.conf app/$(APP_NAME)/nginx.inc.conf && cp config/h5bp_mime.types app/$(APP_NAME)/h5bp_mime.types && cd app/$(APP_NAME) && git add nginx.inc.conf h5bp_mime.types && git diff-index --quiet --cached HEAD || git commit -qm "Adding nginx.inc.conf & h5bp_mime.types to specify container NGINX settings")
 	# adding favicon.ico to site
-	@(cp config/favicon.ico $(APP_NAME)/favicon.ico && cd $(APP_NAME) && git add favicon.ico && git diff-index --quiet --cached HEAD || git commit -qm "Adding favicon.ico")
+	@(cp config/favicon.ico app/$(APP_NAME)/favicon.ico && cd app/$(APP_NAME) && git add favicon.ico && git diff-index --quiet --cached HEAD || git commit -qm "Adding favicon.ico")
 	# setting the correct dokku remote for app and server combination
-	@cd $(APP_NAME) && (git remote rm dokku 2> /dev/null || true) && git remote add dokku "dokku@$(SERVER_NAME):$(APP_NAME)"
+	@cd app/$(APP_NAME) && (git remote rm dokku 2> /dev/null || true) && git remote add dokku "dokku@$(SERVER_NAME):$(APP_NAME)"
 	# retrieving potential salts and writing them to /tmp/wp-salts
 ifdef CURL_INSTALLED
 	@curl -so /tmp/wp-salts https://api.wordpress.org/secret-key/1.1/salt/
@@ -158,7 +158,7 @@ else
 		echo ""; \
 		echo "# now, on your local machine, change directory to your new wordpress app, and push it up"; \
 		echo ""; \
-		echo "cd $(APP_NAME)"; \
+		echo "cd app/$(APP_NAME)"; \
 		echo "git push dokku master"; \
 	fi
 endif
@@ -184,7 +184,7 @@ else
 		echo ""; \
 		echo "# now, on your local machine, change directory to your new wordpress app, and push it up"; \
 		echo ""; \
-		echo "cd $(APP_NAME)"; \
+		echo "cd app/$(APP_NAME)"; \
 		echo "git push dokku master"; \
 	fi
 endif
@@ -239,12 +239,12 @@ instructions: ## shows app setup instructions
 	@echo ""
 	# now, on your local machine, change directory to your new wordpress app, and push it up
 	@echo ""
-	@echo "cd $(APP_NAME)"
+	@echo "cd app/$(APP_NAME)"
 	@echo "git push dokku master"
 
 .PHONY: deploy
 deploy: ## deploys the built application to the dokku server
-	cd $(APP_NAME)/ && git push dokku master
+	cd app/$(APP_NAME)/ && git push dokku master
 
 .PHONY: destroy
 destroy: ## destroys an existing wordpress blog installation and outputs undeploy instructions
@@ -270,7 +270,7 @@ ifndef UNATTENDED
 	@echo ""
 	# now, on your local machine, cd into your app's parent directory and remove the app
 	@echo ""
-	@echo "rm -rf $(APP_NAME)"
+	@echo "rm -rf app/$(APP_NAME)"
 else
 	# destroy the database
 	$(DOKKU_CMD) $(DB_TYPE):unlink $(DB_NAME) $(APP_NAME)
@@ -283,12 +283,12 @@ else
 	@echo ""
 	# now, on your local machine, cd into your app's parent directory and remove the app
 	@echo ""
-	@echo "rm -rf $(APP_NAME)"
+	@echo "rm -rf app/$(APP_NAME)"
 endif
 
 .PHONY: diff_prod
 diff_prod: ## compare the local app with the server app
-	@cd $(APP_NAME) && git fetch dokku && git diff dokku/master master
+	@cd app/$(APP_NAME) && git fetch dokku && git diff dokku/master master
 
 .PHONY: push
 push: ## send files from [<local path>] to [<hostname or USER@HOST>]:[<remote path>]
