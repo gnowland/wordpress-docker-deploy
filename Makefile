@@ -96,7 +96,6 @@ else
 endif
 else # If app directory does not exist
 	# creating the wordpress repo
-	@(grep -qxF '$(APP_NAME)/' .gitignore || echo '$(APP_NAME)/' >> .gitignore)
 	@(git -c advice.detachedHead=false clone --branch=$(WORDPRESS_VERSION) --single-branch https://github.com/WordPress/WordPress.git app/$(APP_NAME) && cd app/$(APP_NAME) && git checkout -qb master);
 endif
 	@echo ""
