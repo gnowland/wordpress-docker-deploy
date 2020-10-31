@@ -87,7 +87,7 @@ function wgit {
 		return 1
 	fi
 	DIR=$(echo $1 | cut -d'/' -f2- ) && \
-	sudo rm -f master.zip && \
+	sudo rm -f master.zip && sudo rm -f "$DIR" \
 	sudo wget https://github.com/$1/archive/master.zip && \
 	sudo unzip -q master.zip && sudo rm -f master.zip && \
 	sudo mv -n "$DIR-master" "$DIR" && \
@@ -183,6 +183,7 @@ function db {
 			local TIMESTAMP=$(date +"%Y%m%d%H%M%S")
 			dokku mariadb:export stdb-wp > ~/.sql/stdb-wp_$TIMESTAMP.sql
 			echo "~/.sql/stdb-wp_$TIMESTAMP.sql"
+			return 0
 		fi
 	;;
 	"import" | "-i" )
@@ -191,6 +192,8 @@ function db {
 			return 1
 		fi
 		dokku mariadb:import stdb-wp < $2
+		echo "$2 imported to stdb-wp"
+		return 0
 	;;
 	esac
 }
