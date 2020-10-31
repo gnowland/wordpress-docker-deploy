@@ -55,6 +55,30 @@ function bin {
 	fi
 }
 
+# copy to docker container
+# dcp -[<i/o>] [<source>] [<appname>] [<destination>]
+function dcp {
+	if [ "$1" != "-i" ] && [ "$1" != "-o" ]; then
+		echo "$1"
+		echo "You must specify in (-i) or out (-o)!"
+		return 1
+	fi
+
+	if [ $# -lt 3 ]; then
+		echo "You must supply a [<source>], an [<appname>] and a [<destination>]!"
+		return 1
+	fi
+
+	case $1 in
+	"-i" )
+		docker cp $2 $3.web.1:$4
+	;;
+	"-o" )
+		docker cp $3.web.1:$2 $4
+	;;
+	esac
+}
+
 # download git repo, extract, set ownership/permissions, clean up.
 # @example wgit [<user/repo>]
 function wgit {

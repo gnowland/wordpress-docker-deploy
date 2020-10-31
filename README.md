@@ -74,18 +74,19 @@ scp .profile [<remote hostname or USER@HOST>]:~
 source .profile
 ```
 
-| Command                           | Action                                                  | Notes                                                  |
-| --------------------------------- | ------------------------------------------------------- | ------------------------------------------------------ |
-| `la [<(opt: dir)>]`               | Supercharged `ls` (list files)                          | Uses current `dir` if unspecified                      |
-| `lap [<(opt: dir)>]`              | `la` with "octal permissions" (e.g. 755)                | ☝️                                                     |
-| `bin [<appname>] [<(opt: sudo)>]` | Enter container as root                                 | Executes `docker exec -it [<appname>].web.1 /bin/bash;`<br> (assumes `docker ps` 'name')`<br> Shorthand: `sudo : -s` |
-| `wgit [<user/repo>]`              | Download a git repo (e.g. plugin), extract, set ownership & permissions | Sets ownership to 32767 (container user)               |
-| `uzp [<file.zip>]`                | Extract a `.zip` file, set ownership & permissions                      | ☝️, (also: be sure to verify unzipped directory name!) |
-| `pfix`                            | Fix ownership & permissions of current directory & subdirectories       | Sets ownership to 32767 (container user)               |
-| `av [<on/off>]`                   | Turn on/off Sophos AV                                                   | Shorthand: `on : -i`, `off : -o` |
-| `clr`                             | Clear up RAM (PageCache, Swapfile)                                      | Not recommended to run often, or in live environments! |
-| `db [<export/import>] [<(import.sql)>]` | Import or export a database dump                                  | Export: Database dumps to `~/.sql` with timestamped filename.<br>Import: requires passing a `dump.sql` file<br>Shorthand: `export: -e`, `import: -i` |
-| `sync [<up/down>]`                | Sync `wp-content` files up or down from VAGRANT (dev) server            | Note: this only works between local & vagrant, this **will not work on remote (prod)**<br>Shorthand: `up: -u`, `down: -d` |
+| Command                                                    | Action                                                       | Notes                                                        |
+| ---------------------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `la [<(opt: dir)>]`                                        | Supercharged `ls` (list files)                               | Uses current `dir` if unspecified                            |
+| `lap [<(opt: dir)>]`                                       | `la` with "octal permissions" (e.g. 755)                     | ☝️                                                            |
+| `bin [<appname>] [<(opt: sudo)>]`                          | Enter container as root                                      | Executes `docker exec -it [<appname>].web.1 /bin/bash;`<br> (assumes `docker ps` 'name')`<br> Shorthand: `sudo : -s` |
+| Copy files into (`-i`) or out of (`-o`) a docker container | `dcp -[<i/o>] [<source>] [<app name>] [<destination>]`       | Executes `docker cp [<source>] [<appname>]:[<destination>]` (swapping order for in/out) |
+| `wgit [<user/repo>]`                                       | Download a git repo (e.g. plugin), extract, set ownership & permissions | Sets ownership to 32767 (container user)                     |
+| `uzp [<file.zip>]`                                         | Extract a `.zip` file, set ownership & permissions           | ☝️, (also: be sure to verify unzipped directory name!)        |
+| `pfix`                                                     | Fix ownership & permissions of current directory & subdirectories | Sets ownership to 32767 (container user)                     |
+| `av [<on/off>]`                                            | Turn on/off Sophos AV                                        | Shorthand: `on : -i`, `off : -o`                             |
+| `clr`                                                      | Clear up RAM (PageCache, Swapfile)                           | Not recommended to run often, or in live environments!       |
+| `db [<export/import>] [<(import.sql)>]`                    | Import or export a database dump                             | Export: Database dumps to `~/.sql` with timestamped filename.<br>Import: requires passing a `dump.sql` file<br>Shorthand: `export: -e`, `import: -i` |
+| `sync [<up/down>]`                                         | Sync `wp-content` files up or down from VAGRANT (dev) server | Note: this only works between local & vagrant, this **will not work on remote (prod)**<br>Shorthand: `up: -u`, `down: -d` |
 
 
 ## Upgrading WordPress
