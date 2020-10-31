@@ -1,0 +1,3 @@
+[submodule "vendors/dokku"]
+	path = vendors/dokku
+	url = https://github.com/dokku/dokku.git
