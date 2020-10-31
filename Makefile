@@ -324,7 +324,7 @@ pull: ## pull files from [<hostname or USER@HOST>]:[<remote path>] to [<local pa
 	fi
 
 .PHONY: sync
-sync: ## sync files [<from hostname or USER@HOST>] [<to hostname or USER@HOST>]
+sync: ## sync wp-content and/or database [<from hostname or USER@HOST>] [<to hostname or USER@HOST>] (prompts)
 ifneq ($(wildcard tmp/),)
 	@echo empty tmp/? [Y/n]
 	@read line; if [[ $$line = "y" || $$line = "Y" ]] ; \
